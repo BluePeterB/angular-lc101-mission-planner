@@ -21,6 +21,8 @@ export class EquipmentComponent implements OnInit {
    cargoMass: number = 0;
    maximumAllowedMass: number = 2000;
    maxItems: number = 10;
+   massBudgetRemaining: number = 2000;
+   almostMaxMass: boolean = false;
 
    constructor() { }
 
@@ -29,7 +31,9 @@ export class EquipmentComponent implements OnInit {
    addItem(item) {
      this.cargoHold.push(item);
      this.cargoMass += item.mass;
-     if (this.maximumAllowedMass - this.cargoMass <= 200) {
+     this.massBudgetRemaining = this.maximumAllowedMass - this.cargoMass ;
+     this.almostMaxMass = this.massBudgetRemaining<= 200;
+     if (this.almostMaxMass ) {
        return false;
      } else {
        return true;
@@ -39,6 +43,12 @@ export class EquipmentComponent implements OnInit {
 
    disableButton(item) {
      return this.cargoHold.length === this.maxItems || (item.mass + this.cargoMass) > this.maximumAllowedMass;
+   }
+
+   emptyHold() {
+     this.cargoHold = [];
+     this.cargoMass = 0;
+     this.massBudgetRemaining = this.maximumAllowedMass;
    }
    
 }
